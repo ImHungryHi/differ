@@ -1,21 +1,28 @@
 package org.hungry.differ.logic;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import org.hungry.differ.constants.Parameter;
-import org.hungry.differ.test.util.UnitTestUtility;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HelpPrinterTest {
 
-    ListAppender<ILoggingEvent> logWatcher = null;
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream logWatcher = new ByteArrayOutputStream();
 
     @BeforeEach
     void setup() {
-        logWatcher = UnitTestUtility.createLogWatcher(HelpPrinter.class);
+        System.setOut(new PrintStream(logWatcher));
+    }
+
+    @AfterEach
+    void teardown() {
+        System.setOut(standardOut);
     }
 
     @Test
@@ -32,7 +39,7 @@ class HelpPrinterTest {
         helpPrinter.process();
 
         // Then
-        assertTrue(logWatcher.list.stream().anyMatch(logItem -> logItem.getMessage().contains(Parameter.HELP.getDescription())));
+        assertTrue(logWatcher.toString().contains(Parameter.HELP.getDescription()));
     }
 
     @Test
@@ -44,7 +51,7 @@ class HelpPrinterTest {
         helpPrinter.process();
 
         // Then
-        assertTrue(logWatcher.list.stream().anyMatch(logItem -> logItem.getMessage().contains(Parameter.DUAL.getDescription())));
+        assertTrue(logWatcher.toString().contains(Parameter.DUAL.getDescription()));
     }
 
     @Test
@@ -56,6 +63,6 @@ class HelpPrinterTest {
         helpPrinter.process();
 
         // Then
-        assertTrue(logWatcher.list.stream().anyMatch(logItem -> logItem.getMessage().contains(Parameter.TREE.getDescription())));
+        assertTrue(logWatcher.toString().contains(Parameter.TREE.getDescription()));
     }
 }

@@ -1,6 +1,5 @@
 package org.hungry.differ.logic;
 
-import lombok.extern.slf4j.Slf4j;
 import org.hungry.differ.constants.Number;
 import org.hungry.differ.constants.Text;
 import org.hungry.differ.interfaces.DifferProcessor;
@@ -8,7 +7,6 @@ import org.hungry.differ.interfaces.DifferProcessor;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 public class DualComparator implements DifferProcessor {
 
     private Map<String, Integer> lineWithOccurrence = new HashMap<>();
@@ -24,7 +22,7 @@ public class DualComparator implements DifferProcessor {
     }
 
     public void process() {
-        log.info("Not implemented yet");
+        System.out.println("Not implemented yet");
     }
 
     String appendDiffToOriginFileName(String originFileName) {

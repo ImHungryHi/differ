@@ -10,12 +10,16 @@ import java.util.Map;
 @AllArgsConstructor
 public enum Parameter {
 
-    HELP("h", "help", "Display the message that you're currently looking at. Go ahead, see if anything changes."),
-    TREE("t", "tree-compare", "Execute to check a folder for duplicate files. " +
-            "Will look at file size, first + last bytes, checksum, filename."),
-    DUAL("d", "dual-compare", "Execute to compare 2 files and check for diffs. " +
-            "Usage is 'differ [-d|-dual-compare] file1.extension [file1_diff.extension]'." +
-            "Have the second file suffixed with '_diff' before the extension to be able to run without a second filename.");
+    HELP("h", "help", """
+            Display the message that you're currently looking at.
+            \tGo ahead, see if anything changes."""),
+    TREE("t", "tree-compare", """
+            Execute to check a folder for duplicate files.
+            \tWill look at file size, first + last bytes, checksum, filename."""),
+    DUAL("d", "dual-compare", """
+            Execute to compare 2 files and check for diffs.
+            \tUsage is 'differ [-d|-dual-compare] file1.extension [file1_diff.extension]'.
+            \tSuffix the target file with '_diff' like above to run without a second filename.""");
 
     private final String letter;
     private final String name;
