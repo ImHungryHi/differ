@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArgumentParser {
 
-    public static DifferProcessor parseToComparator(String[] arguments) {
+    public static DifferProcessor parseToProcessor(String[] arguments) {
 
         DifferProcessor processor = null;
         Parameter parameter = getParameters(arguments).iterator().next();

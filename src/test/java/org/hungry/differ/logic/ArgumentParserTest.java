@@ -26,7 +26,7 @@ class ArgumentParserTest {
         String[] arguments = new String[] { parameter };
 
         // When
-        DifferProcessor actual = ArgumentParser.parseToComparator(arguments);
+        DifferProcessor actual = ArgumentParser.parseToProcessor(arguments);
 
         // Then
         assertInstanceOf(HelpPrinter.class, actual);
@@ -39,7 +39,7 @@ class ArgumentParserTest {
         String[] arguments = new String[] { parameter, "C:/Users/UTlity/0001.csv" };
 
         // When
-        DifferProcessor actual = ArgumentParser.parseToComparator(arguments);
+        DifferProcessor actual = ArgumentParser.parseToProcessor(arguments);
 
         // Then
         assertInstanceOf(DualComparator.class, actual);
@@ -52,7 +52,7 @@ class ArgumentParserTest {
         String[] arguments = new String[] { parameter };
 
         // When
-        DifferProcessor actual = ArgumentParser.parseToComparator(arguments);
+        DifferProcessor actual = ArgumentParser.parseToProcessor(arguments);
 
         // Then
         assertInstanceOf(TreeComparator.class, actual);

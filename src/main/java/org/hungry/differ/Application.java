@@ -7,7 +7,7 @@ import org.hungry.differ.logic.ArgumentValidator;
 public class Application {
     public static void main(String[] arguments) {
         ArgumentValidator.validate(arguments);
-        DifferProcessor processor = ArgumentParser.parseToComparator(arguments);
+        DifferProcessor processor = ArgumentParser.parseToProcessor(arguments);
         processor.process();
     }
 }
