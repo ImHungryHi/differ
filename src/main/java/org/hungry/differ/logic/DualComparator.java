@@ -7,13 +7,13 @@ import org.hungry.differ.interfaces.DifferProcessor;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class DualComparator implements DifferProcessor {
 
-    private final Map<String, Integer> lineWithOccurrence = new HashMap<>();
+    private final SortedMap<String, Integer> lineWithOccurrence = new TreeMap<>();
     private final String originFilePath;
     private final String targetFilePath;
 
