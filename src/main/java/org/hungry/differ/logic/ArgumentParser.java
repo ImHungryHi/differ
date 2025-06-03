@@ -7,9 +7,7 @@ import org.hungry.differ.constants.Parameter;
 import org.hungry.differ.constants.Text;
 import org.hungry.differ.interfaces.DifferProcessor;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArgumentParser {
@@ -18,7 +16,7 @@ public class ArgumentParser {
 
         DifferProcessor processor = null;
         Parameter parameter = getParameters(arguments).iterator().next();
-        Set<String> fileNameSet = getFileNames(arguments);
+        List<String> fileNameSet = getFileNames(arguments);
 
         if (parameter.isHelp()) {
 
@@ -51,9 +49,9 @@ public class ArgumentParser {
         return parameterSet;
     }
 
-    static Set<String> getFileNames(String[] arguments) {
+    static List<String> getFileNames(String[] arguments) {
 
-        Set<String> fileNameSet = new HashSet<>();
+        List<String> fileNameSet = new LinkedList<>();
 
         for (String argument : arguments) {
 
