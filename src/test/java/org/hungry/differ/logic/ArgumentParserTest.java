@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,11 +97,11 @@ class ArgumentParserTest {
         String[] arguments = new String[] { firstParameter, secondParameter, "tree-compare", "filename.csv" };
 
         // When
-        Set<String> actual = ArgumentParser.getFileNames(arguments);
+        List<String> actual = ArgumentParser.getFileNames(arguments);
 
         // Then
         assertEquals(Number.TWO, actual.size());
-        assertTrue(actual.contains("tree-compare"));
-        assertTrue(actual.contains("filename.csv"));
+        assertEquals("tree-compare", actual.get(Number.ZERO));
+        assertEquals("filename.csv", actual.get(Number.ONE));
     }
 }
