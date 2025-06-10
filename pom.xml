@@ -16,7 +16,6 @@
         <lombok.version>1.18.32</lombok.version>
         <jupiter.version>5.8.2</jupiter.version>
         <jupiter.launcher.version>1.8.2</jupiter.launcher.version>
-        <logback.version>1.5.18</logback.version>
     </properties>
 
     <dependencies>
@@ -105,7 +104,7 @@
             </plugin>
 
             <plugin>
-            <groupId>org.pitest</groupId>
+                <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.19.4</version>
             </plugin>
