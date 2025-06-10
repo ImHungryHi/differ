@@ -33,7 +33,7 @@ class DualComparatorTest {
     void should_ParseFile_AndGetLineOccurrence_CountInIncrements(int directionalIncrement) {
         // Given
         DualComparator dualComparator = new DualComparator(ORIGIN_PATH, TARGET_PATH);
-        dualComparator.parseFile(ORIGIN_PATH, directionalIncrement, DifferError.IO_004);
+        dualComparator.parseFile(ORIGIN_PATH, directionalIncrement, DifferError.IO_001);
 
         // When
         int actual = dualComparator.getLineOccurrence("Twas bryllig and the slithy toves");
@@ -53,20 +53,6 @@ class DualComparatorTest {
 
         // Then
         assertEquals(differError.getIdentifier(), actual.getIdentifier());
-    }
-
-    @ParameterizedTest
-    @CsvSource({ Text.DEFAULT_FILE_SUFFIX + ",true,0001_diff.csv", Text.RESULT_FILE_SUFFIX + ",false,0001_result.txt" })
-    void should_AppendSuffixToOriginalFileName(String suffix, boolean shouldAppendExtension, String expected) {
-        // Given
-        String given = "0001.csv";
-        DualComparator dualComparator = new DualComparator(given, Text.EMPTY);
-
-        // When
-        String actual = dualComparator.appendSuffixToOriginFileName(given, suffix, shouldAppendExtension);
-
-        // Then
-        assertEquals(expected, actual);
     }
 
     @ParameterizedTest

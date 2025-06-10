@@ -9,6 +9,7 @@ public class Text {
     public static final String EMPTY = "";
     public static final String SPACE = " ";
     public static final String HYPHEN = "-";
+    public static final String DOUBLE_HYPHEN = "--";
     public static final String UNDERSCORE = "_";
     public static final String NOT_APPLICABLE = "NA";
 

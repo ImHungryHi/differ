@@ -21,7 +21,7 @@ class ArgumentParserTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "-h", "-help" })
+    @ValueSource(strings = { "-h", "--help" })
     void should_ParseToHelpPrinter(String parameter) {
         // Given
         String[] arguments = new String[] { parameter };
@@ -34,7 +34,7 @@ class ArgumentParserTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "-d", "-dual-compare" })
+    @ValueSource(strings = { "-d", "--dual-compare" })
     void should_ParseToDualComparator_WithMinimumOneFileName(String parameter) {
         // Given
         String[] arguments = new String[] { parameter, "C:/Users/UTlity/0001.csv" };
@@ -47,7 +47,43 @@ class ArgumentParserTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "-t", "-tree-compare" })
+    @ValueSource(strings = {
+            "-dc C:/Users/UTlity/0001.csv",
+            "-d -c C:/Users/UTlity/0001.csv",
+            "--dual-compare -c C:/Users/UTlity/0001.csv",
+            "-d --csv C:/Users/UTlity/0001.csv",
+            "--dual-compare --csv C:/Users/UTlity/0001.csv" })
+    void should_ParseToCsvComparator_WithMinimumOneFileName(String parameter) {
+        // Given
+        String[] arguments = parameter.split(" ");
+
+        // When
+        DifferProcessor actual = ArgumentParser.parseToProcessor(arguments);
+
+        // Then
+        assertInstanceOf(CsvComparator.class, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "-dca C:/Users/UTlity/0001.csv",
+            "-d -c -a C:/Users/UTlity/0001.csv",
+            "--dual-compare -c --all C:/Users/UTlity/0001.csv",
+            "-d --csv -a C:/Users/UTlity/0001.csv",
+            "--dual-compare --csv --all C:/Users/UTlity/0001.csv" })
+    void should_ParseToAllCsvComparator_WithMinimumOneFileName(String parameter) {
+        // Given
+        String[] arguments = parameter.split(" ");
+
+        // When
+        DifferProcessor actual = ArgumentParser.parseToProcessor(arguments);
+
+        // Then
+        assertInstanceOf(AllCsvComparator.class, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "-t", "--tree-compare" })
     void should_ParseToTreeComparator_WithMinimalInput(String parameter) {
         // Given
         String[] arguments = new String[] { parameter };
@@ -60,23 +96,25 @@ class ArgumentParserTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "-t,-d,-help", "-dual-compare,-tree-compare,-h" })
-    void should_GetParameters(String firstParameter, String secondParameter, String thirdParameter) {
+    @CsvSource({ "-t,-d,--help,-a,--csv", "--dual-compare,--tree-compare,-h,--all,-c" })
+    void should_GetParameters(String first, String second, String third, String fourth, String fifth) {
         // Given
-        String[] arguments = new String[] { firstParameter, secondParameter, thirdParameter };
+        String[] arguments = new String[] { first, second, third, fourth, fifth };
 
         // When
         Set<Parameter> actual = ArgumentParser.getParameters(arguments);
 
         // Then
-        assertEquals(Number.THREE, actual.size());
+        assertEquals(Number.FIVE, actual.size());
         assertTrue(actual.contains(Parameter.DUAL));
         assertTrue(actual.contains(Parameter.TREE));
         assertTrue(actual.contains(Parameter.HELP));
+        assertTrue(actual.contains(Parameter.ALL));
+        assertTrue(actual.contains(Parameter.CSV));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "-d", "-dual-compare" })
+    @ValueSource(strings = { "-d", "--dual-compare" })
     void should_GetParameters_OnlyWithHyphenAtStart(String firstParameter) {
         // Given
         String[] arguments = new String[] { firstParameter, "tree-compare", "filename.csv" };
@@ -91,7 +129,7 @@ class ArgumentParserTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "-t,-d", "-dual-compare,-tree-compare" })
+    @CsvSource({ "-t,-d", "--dual-compare,--tree-compare" })
     void getFileNames(String firstParameter, String secondParameter) {
         // Given
         String[] arguments = new String[] { firstParameter, secondParameter, "tree-compare", "filename.csv" };

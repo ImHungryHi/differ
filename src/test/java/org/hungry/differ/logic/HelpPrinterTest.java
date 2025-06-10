@@ -21,7 +21,7 @@ class HelpPrinterTest {
     }
 
     @AfterEach
-    void teardown() {
+    void tearDown() {
         System.setOut(standardOut);
     }
 
@@ -52,6 +52,30 @@ class HelpPrinterTest {
 
         // Then
         assertTrue(logWatcher.toString().contains(Parameter.DUAL.getDescription()));
+    }
+
+    @Test
+    void should_PrintCsvParameterHelp() {
+        // Given
+        HelpPrinter helpPrinter = new HelpPrinter();
+
+        // When
+        helpPrinter.process();
+
+        // Then
+        assertTrue(logWatcher.toString().contains(Parameter.CSV.getDescription()));
+    }
+
+    @Test
+    void should_PrintAllParameterHelp() {
+        // Given
+        HelpPrinter helpPrinter = new HelpPrinter();
+
+        // When
+        helpPrinter.process();
+
+        // Then
+        assertTrue(logWatcher.toString().contains(Parameter.ALL.getDescription()));
     }
 
     @Test

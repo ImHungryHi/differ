@@ -3,6 +3,7 @@ package org.hungry.differ.logic;
 import org.hungry.differ.constants.*;
 import org.hungry.differ.constants.Number;
 import org.hungry.differ.interfaces.DifferProcessor;
+import org.hungry.differ.utility.TextUtility;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,15 +22,15 @@ public class DualComparator implements DifferProcessor {
 
     public DualComparator(String originFilePath, String targetFilePath) {
         if (targetFilePath.isBlank())
-            targetFilePath = appendSuffixToOriginFileName(originFilePath, Text.DEFAULT_FILE_SUFFIX, true);
+            targetFilePath = TextUtility.appendSuffixToOriginFileName(originFilePath, Text.DEFAULT_FILE_SUFFIX, true);
 
         this.originFilePath = originFilePath;
         this.targetFilePath = targetFilePath;
     }
 
     public void process() {
-        parseFile(originFilePath, Number.ONE, DifferError.IO_004);
-        parseFile(targetFilePath, Number.MINUS_ONE, DifferError.IO_005);
+        parseFile(originFilePath, Number.ONE, DifferError.IO_001);
+        parseFile(targetFilePath, Number.MINUS_ONE, DifferError.IO_002);
 
         printResult();
     }
@@ -48,20 +49,6 @@ public class DualComparator implements DifferProcessor {
 
     int getLineOccurrence(String line) {
         return lineWithOccurrence.getOrDefault(line, Number.ZERO);
-    }
-
-    static String appendSuffixToOriginFileName(String originFileName, String suffix, boolean shouldAppendExtension) {
-
-        StringBuilder appendedFileName = new StringBuilder();
-        int startIndexOfExtension= originFileName.lastIndexOf(Text.CHAR_PERIOD);
-
-        appendedFileName.append(originFileName, Number.ZERO, startIndexOfExtension);
-        appendedFileName.append(suffix);
-
-        if (shouldAppendExtension)
-            appendedFileName.append(originFileName.substring(startIndexOfExtension));
-
-        return appendedFileName.toString();
     }
 
     private void printResult() {
@@ -85,10 +72,10 @@ public class DualComparator implements DifferProcessor {
         System.out.println(screenOutputBuilder);
 
         try {
-            String resultFilePath = appendSuffixToOriginFileName(originFilePath, Text.RESULT_FILE_SUFFIX, false);
+            String resultFilePath = TextUtility.appendSuffixToOriginFileName(originFilePath, Text.RESULT_FILE_SUFFIX, false);
             Files.writeString(Paths.get(resultFilePath), fileOutputBuilder.toString());
         } catch (IOException ioException) {
-            DifferError.IO_006.throwDifferException();
+            DifferError.IO_003.throwDifferException();
         }
     }
 

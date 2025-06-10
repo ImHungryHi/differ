@@ -15,22 +15,28 @@ public class ArgumentParser {
     public static DifferProcessor parseToProcessor(String[] arguments) {
 
         DifferProcessor processor = null;
-        Parameter parameter = getParameters(arguments).iterator().next();
+        Set<Parameter> parameterSet = getParameters(arguments);
         List<String> fileNameSet = getFileNames(arguments);
+        Iterator<String> fileNameIterator = fileNameSet.iterator();
 
-        if (parameter.isHelp()) {
+        if (parameterSet.stream().allMatch(Parameter::isHelp)) {
 
             processor = new HelpPrinter();
-        } else if (parameter.isDualCompare()) {
+        } else if (Parameter.isAllCsvCompare(parameterSet)) {
 
-            Iterator<String> fileNameIterator = fileNameSet.iterator();
+            processor = new AllCsvComparator(fileNameIterator.next(), getSecondFileName(fileNameIterator));
+        } else if (Parameter.isCsvCompare(parameterSet)) {
+
+            processor = new CsvComparator(fileNameIterator.next(), getSecondFileName(fileNameIterator));
+        } else if (parameterSet.stream().allMatch(Parameter::isDualCompare)) {
+
             processor = new DualComparator(fileNameIterator.next(), getSecondFileName(fileNameIterator));
-        } else if (parameter.isTreeCompare()) {
+        } else if (parameterSet.stream().allMatch(Parameter::isTreeCompare)) {
 
             if (fileNameSet.isEmpty())
                 fileNameSet.add(System.getProperty("user.dir"));
 
-            processor = new TreeComparator(fileNameSet.iterator().next());
+            processor = new TreeComparator(fileNameSet.getFirst());
         }
 
         return processor;
@@ -42,8 +48,20 @@ public class ArgumentParser {
 
         for (String argument : arguments) {
 
-            if (argument.startsWith(Text.HYPHEN))
-                parameterSet.add(Parameter.getByLetterOrName(argument.substring(Number.ONE)));
+            if (argument.startsWith(Text.DOUBLE_HYPHEN))
+                parameterSet.add(Parameter.getByLetterOrName(argument.substring(Number.TWO)));
+            else if (argument.startsWith(Text.HYPHEN))
+                parameterSet.addAll(convertSingleParameters(argument.substring(Number.ONE)));
+        }
+
+        return parameterSet;
+    }
+
+    private static Set<Parameter> convertSingleParameters(String argument) {
+        Set<Parameter> parameterSet = new HashSet<>();
+
+        for (char character : argument.toCharArray()) {
+            parameterSet.add(Parameter.getByLetterOrName(String.valueOf(character)));
         }
 
         return parameterSet;

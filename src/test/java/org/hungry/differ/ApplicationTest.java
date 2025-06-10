@@ -2,6 +2,7 @@ package org.hungry.differ;
 
 import org.hungry.differ.constants.DifferError;
 import org.hungry.differ.constants.Parameter;
+import org.hungry.differ.errors.DifferException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class ApplicationTest {
     @Test
     void should_Validate() {
         // When
-        IllegalArgumentException actual = assertThrows(IllegalArgumentException.class,
+        DifferException actual = assertThrows(DifferException.class,
                 () -> Application.main(new String[0]));
 
         // Then
